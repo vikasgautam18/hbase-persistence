@@ -18,7 +18,6 @@ public class HbaseOperations {
      * Get a connectoin to connect to HBase from factory object
      * @param hbaseConfiguration
      * @return Connection object
-     * @throws IOException
      */
     public Connection getHBaseConnection(Configuration hbaseConfiguration){
         Connection connection = null;
@@ -32,8 +31,7 @@ public class HbaseOperations {
 
     /**
      * close a given connection
-     * @param connection
-     * @throws IOException
+     * @param connection HBaseConnection Object
      */
     public void closeHBaseConnection(Connection connection) {
         try {
@@ -45,7 +43,7 @@ public class HbaseOperations {
 
     /**
      * Get an Admin object to perform administrative activities
-     * @param connection
+     * @param connection HBaseConnection Object
      * @return Admin objecct
      * @throws IOException
      */

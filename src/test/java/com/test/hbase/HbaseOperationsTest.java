@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class HbaseOperationsTest {
 
@@ -27,6 +27,9 @@ public class HbaseOperationsTest {
         try {
             System.out.println("*** Starting HBase Mini Cluster ***");
             utility.startMiniCluster();
+
+            HBaseAdmin.available(utility.getConfiguration());
+            System.out.println("*** HBase Mini Cluster Successfully started ***");
         } catch (Exception e) {
             if(utility != null){
                 utility.shutdownMiniCluster();
@@ -46,14 +49,12 @@ public class HbaseOperationsTest {
         Connection connection = null;
         try {
             connection = hbaseOperations.getHBaseConnection(HBaseConfiguration.create(utility.getConfiguration()));
-            assertEquals(false, connection.isClosed());
+            assertFalse(connection.isClosed());
             connection.close();
 
         } catch (IOException e) {
-            if(connection != null){
-                if (!connection.isClosed())
-                    connection.close();
-            }
+            if (!connection.isClosed())
+                connection.close();
             e.printStackTrace();
         }
     }
@@ -63,7 +64,7 @@ public class HbaseOperationsTest {
         Connection connection = hbaseOperations.getHBaseConnection(HBaseConfiguration.create(utility.getConfiguration()));
         hbaseOperations.closeHBaseConnection(connection);
 
-        assertEquals(true, connection.isClosed());
+        assertTrue(connection.isClosed());
     }
 
     @Test
@@ -73,14 +74,12 @@ public class HbaseOperationsTest {
              connection = hbaseOperations.getHBaseConnection(HBaseConfiguration.create(utility.getConfiguration()));
             Admin admin = hbaseOperations.getAdmin(connection);
 
-            assertEquals(false, admin.isAborted());
+            assertFalse(admin.isAborted());
             assertEquals("org.apache.hadoop.hbase.client.HBaseAdmin", admin.getClass().getCanonicalName());
 
         } catch (IOException e) {
-            if(connection != null){
-                if (!connection.isClosed())
-                    connection.close();
-            }
+            if (!connection.isClosed())
+                connection.close();
             e.printStackTrace();
         }
     }
@@ -95,8 +94,8 @@ public class HbaseOperationsTest {
 
             hbaseOperations.createTable(connection, NEW_TABLE , "cf");
 
-            assertEquals(true, utility.getAdmin().tableExists(TableName.valueOf("test_table")));
-            assertEquals(true, connection.getTable(NEW_TABLE).getDescriptor().getColumnFamilyNames().contains(COLUMN_FAMILY));
+            assertTrue(utility.getAdmin().tableExists(TableName.valueOf("test_table")));
+            assertTrue(connection.getTable(NEW_TABLE).getDescriptor().getColumnFamilyNames().contains(COLUMN_FAMILY));
         } catch (IOException e) {
             if(connection != null){
                 if (!connection.isClosed())

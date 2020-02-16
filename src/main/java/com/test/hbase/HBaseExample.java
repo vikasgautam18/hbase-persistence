@@ -14,7 +14,7 @@ import java.util.List;
 
 public class HBaseExample {
 
-    public static HbaseOperations hbaseOperations = new HbaseOperations();
+    public static final HbaseOperations hbaseOperations = new HbaseOperations();
 
     public static void main(String[] args) throws IOException {
 
